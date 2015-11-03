@@ -18,55 +18,26 @@ class GamePadController: UIViewController, MCNearbyServiceAdvertiserDelegate, MC
     var boardID: MCPeerID?
     
     @IBAction func left(sender: AnyObject) {
-        
-        let info = [
             
-            "action" : "move",
-            "direction" : "left"
-            
-        ]
-        
-        sendInfo(info)
+        sendData(GameData(action: .Move, direction: .Left))
     }
     
     @IBAction func right(sender: AnyObject) {
         
-//        let info = [
-//            
-//            "action" : "move",
-//            "direction" : "right"
-//            
-//        ]
-//        
-//        sendInfo(info)
-        let gameData = GameData(action: .Move, direction: .Right)
-        
-        sendData(gameData)
+
+        sendData(GameData(action: .Move, direction: .Right))
         
     }
     
     @IBAction func fire(sender: AnyObject) {
         
-        
-        let info = [
-            
-            "action" : "fire"
-            
-        ]
-        
-        sendInfo(info)
+        sendData(GameData(action: .Fire))
         
     }
     
     @IBAction func jump(sender: AnyObject) {
         
-        let info = [
-            
-            "action" : "jump"
-            
-        ]
-        
-        sendInfo(info)
+        sendData(GameData(action: .Jump))
     }
     
     //NS Keyed Archiver
@@ -79,35 +50,11 @@ class GamePadController: UIViewController, MCNearbyServiceAdvertiserDelegate, MC
                 
                 try session.sendData(gameData.data, toPeers: [bID], withMode: .Reliable)
                 
+              
+                
             } catch {
                 
                 print(error)
-                
-            }
-            
-            
-        }
-        
-        
-    }
-    
-    
-    func sendInfo(info:[String:String]) {
-        
-        if let data = try? NSJSONSerialization.dataWithJSONObject(info, options: .PrettyPrinted) {
-            
-            if let bID = boardID {
-                
-                do {
-                    
-                    try session.sendData(data, toPeers: [bID], withMode: .Reliable)
-                    
-                } catch {
-                    
-                    print(error)
-                    
-                }
-                
                 
             }
             

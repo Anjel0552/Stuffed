@@ -115,32 +115,27 @@ class GameBoardController: UIViewController, MCNearbyServiceBrowserDelegate, MCS
         
         if let gameData = GameData.data(data) {
         
-            if let action = gameData.action where .Move == action {
+            if let action = gameData.action {
                 
-                scene?.movePixel(peerID.displayName, direction: gameData.direction!.rawValue)
+                switch action {
+                    
+                case .Move :
+                    
+                    if let direction = gameData.direction {
+                        
+                        scene?.movePixel(peerID.displayName, direction: direction)
+                        
+                    }
+                    
+                case .Fire :
+                    
+                    scene?.firePixel(peerID.displayName)
 
-                
-            }
-            
-        }
-        
-        if let info = try? NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as? [String:String]
-        {
-            print(info)
-            
-            
-            if let action = info?["action"] where action == "move", let direction = info?["direction"] {
-                
-                scene?.movePixel(peerID.displayName, direction: direction)
-                
-            }
-            if let action = info?["action"] where action == "jump" {
-                
-                scene?.jumpPixel(peerID.displayName)
-            }
-            if let action = info?["action"] where action == "fire" {
-            
-                scene?.firePixel(peerID.displayName)
+                case .Jump :
+                    
+                    scene?.jumpPixel(peerID.displayName)
+
+                }
             }
         }
     }
